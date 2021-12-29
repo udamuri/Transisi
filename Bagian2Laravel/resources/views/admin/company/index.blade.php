@@ -53,8 +53,9 @@
 											<td>{{$value->email}}</td>
 											<td>{{$value->website}}</td>
 											<td class="text-center">
-												<a class="btn btn-rounded btn-outline-primary btn-sm" href="{{route('admin.companies.edit', $value->id)}}">Edit</a>
-												<button class="btn btn-rounded btn-outline-danger btn-sm jquery-postback" 
+												<a class="btn btn-rounded btn-outline-danger btn-sm" href="{{route('admin.pdf.employees', ['company_id' => $value->id])}}" target="_BLANK">Employee Pdf</a><br>
+												<a class="btn btn-rounded btn-outline-primary btn-sm mt-4" href="{{route('admin.companies.edit', $value->id)}}">Edit</a>
+												<button class="btn btn-rounded btn-outline-danger btn-sm jquery-postback mt-4" 
 													data-href="{{route('admin.companies.destroy', $value->id)}}"
 													data-redirect="{{route('admin.companies.index')}}"
 												>Delete</button>
