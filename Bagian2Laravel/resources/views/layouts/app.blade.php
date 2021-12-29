@@ -9,12 +9,17 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+	<link href="{{asset('css/assets/select2/css/select2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/assets/select2/select2-bootstrap/select2-bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -35,6 +40,9 @@
                     <ul class="navbar-nav mr-auto">
 						<li class="nav-item">
 							<a class="nav-link" href="{{ route('admin.companies.index') }}">{{ __('Companies') }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('admin.employees.index') }}">{{ __('Employees') }}</a>
 						</li>
                     </ul>
 
@@ -84,5 +92,17 @@
 			</div>
         </main>
     </div>
+	<script src="{{ asset('css/assets/jquery/jquery.min.js') }}"></script>
+	<script src="{{asset('css/assets/select2/js/select2.min.js')}}"></script>
+
+	<script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        @yield ('scripts-js')
+    </script>
 </body>
 </html>

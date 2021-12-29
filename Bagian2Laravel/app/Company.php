@@ -107,4 +107,14 @@ class Company extends Model
 
         return $mdl ?? [];
     }
+
+	public function deleteWebapp() {
+
+		Storage::disk('company')->delete("{$this->logo}");
+        if($this->delete()) {
+			return true;
+		}
+
+        return false;
+    }
 }

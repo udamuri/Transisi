@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\EmployeeRequest;
+use App\Employee;
 
 class EmployeeController extends Controller
 {
@@ -12,9 +14,21 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+		$limit = (int) $request->get('per_page') > 0 ? (int) $request->get('per_page') : 5;
+        $page = (int) $request->get('page') > 0 ? (int) $request->get('page') : 1;
+        $queries = ['search', 'page'];
+         
+        $model = Employee::with(['company'])
+				->applyFilters($request->only($queries))
+                ->paginateData($limit)->appends(request()->query());
+
+        return view('admin.employee.index')->with([
+            'model' => $model,
+            'search' => $request->get('search'),
+            'i' =>  (( (int) request()->input('page', 1) - 1) * $page)
+        ]);
     }
 
     /**
@@ -23,8 +37,12 @@ class EmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    {        
+        $companyData = Employee::getEmployee(old('company_id', 0));
+
+        return view('admin.employee.create')->with([
+			'companyData' => json_encode($companyData),
+		]);
     }
 
     /**
@@ -33,9 +51,11 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
-        //
+		Employee::createWebapp($request);
+
+        return redirect()->route('admin.employees.index')->with('success', 'Success');
     }
 
     /**
@@ -55,9 +75,14 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Employee $employee)
     {
-        //
+		$companyData = Employee::getEmployee(old('company_id', $employee->company_id));
+
+        return view('admin.employee.update')->with([
+            'model' => $employee,
+			'companyData' => json_encode($companyData),
+		]);
     }
 
     /**
@@ -67,9 +92,11 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmployeeRequest $request, Employee $employee)
     {
-        //
+        $employee->updateWebapp($request);
+
+		return redirect()->route('admin.employees.index')->with('success', 'Success');
     }
 
     /**
@@ -78,8 +105,8 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
     }
 }

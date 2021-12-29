@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page-title', 'Companies')
+@section('page-title', 'Employees')
 
 @section('content')
 <div class="container">
@@ -9,7 +9,7 @@
 				<div class="card-header">
 					<div class="row">
 						<div class="col-2">
-							Companies
+							Employees
 						</div>
 						<div class="col-8 text-center">
 							<form method="GET">
@@ -23,7 +23,7 @@
 							</form>
 						</div>
 						<div class="col-2 text-right">
-							<a class="btn btn-rounded btn-outline-primary btn-sm" href="{{route('admin.companies.create')}}">Add New</a>
+							<a class="btn btn-rounded btn-outline-primary btn-sm" href="{{route('admin.employees.create')}}">Add New</a>
 						</div>
 					</div>
 					
@@ -36,27 +36,23 @@
 								<table class="table color-table primary-table">
 									<thead>
 										<tr>
-											<th>No</th>
-											<th>Image</th>
 											<th>Name</th>
 											<th>Email</th>
-											<th>Website</th>
+											<th>Company</th>
 											<th class="text-center" width="15%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
 										@foreach ($model as $value)
 										<tr>
-											<td>{{++$i}}</td>
-											<td>{{$value->logoUrl}}</td>
 											<td>{{$value->name}}</td>
 											<td>{{$value->email}}</td>
-											<td>{{$value->website}}</td>
+											<td>{{$value->company->name}}</td>
 											<td class="text-center">
-												<a class="btn btn-rounded btn-outline-primary btn-sm" href="{{route('admin.companies.edit', $value->id)}}">Edit</a>
+												<a class="btn btn-rounded btn-outline-primary btn-sm" href="{{route('admin.employees.edit', $value->id)}}">Edit</a>
 												<button class="btn btn-rounded btn-outline-danger btn-sm jquery-postback" 
-													data-href="{{route('admin.companies.destroy', $value->id)}}"
-													data-redirect="{{route('admin.companies.index')}}"
+													data-href="{{route('admin.employees.destroy', $value->id)}}"
+													data-redirect="{{route('admin.employees.index')}}"
 												>Delete</button>
 											</td>
 										</tr>
@@ -78,10 +74,9 @@
 </div>
 @endsection
 
-
 @section('scripts-js')
 $( ".jquery-postback" ).bind( "click", function(e) {
-	if (confirm("Are you sure you want to delete this company?") == true) {
+	if (confirm("Are you sure you want to delete this employee?") == true) {
 		var urlD = $(this).data('href');
 		var redirectUrl = $(this).data('redirect');
 		$.ajax({

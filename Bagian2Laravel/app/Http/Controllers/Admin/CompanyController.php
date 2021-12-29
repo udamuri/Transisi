@@ -99,6 +99,9 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        if($company->deleteWebapp()) {
+			return response()->json([], 200);
+		}
+		return response()->json([], 200);
     }
 }

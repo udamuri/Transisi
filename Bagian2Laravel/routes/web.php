@@ -24,4 +24,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function() {
 	Route::resource('companies', Admin\CompanyController::class, ['as' => 'admin']);
+	Route::resource('employees', Admin\EmployeeController::class, ['as' => 'admin']);
+
+	Route::group(['prefix' => 'ajax'], function() {
+		Route::get('companies', Admin\CompanyDataController::class)->name('admin.ajax.companies');
+	});
 });
