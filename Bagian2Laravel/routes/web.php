@@ -12,5 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
+});
+
+Auth::routes([
+	'register' => false,
+]);
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function() {
+	Route::resource('companies', Admin\CompanyController::class, ['as' => 'admin']);
 });
