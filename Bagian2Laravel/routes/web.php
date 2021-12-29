@@ -29,4 +29,9 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function() {
 	Route::group(['prefix' => 'ajax'], function() {
 		Route::get('companies', Admin\CompanyDataController::class)->name('admin.ajax.companies');
 	});
+	
+	Route::group(['prefix' => 'pdf'], function() {
+		Route::get('companies', Admin\CompanyPdfController::class)->name('admin.pdf.companies');
+		Route::get('employees', Admin\EmployeePdfController::class)->name('admin.pdf.employees');
+	});
 });

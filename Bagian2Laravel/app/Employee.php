@@ -51,6 +51,11 @@ class Employee extends Model
 		})->orWhere('employees.name', 'LIKE', '%'.$search.'%')
 		->orWhere('employees.email', 'LIKE', '%'.$search.'%');
     }
+	
+	public function scopeWhereCompanyId($query, $company_id)
+    {
+		$query->where('employees.company_id', $company_id);
+    }
     
     public function scopeApplyFilters($query, array $filters)
     {
@@ -58,12 +63,16 @@ class Employee extends Model
         if ($filters->get('search')) {
             $query->whereSearch($filters->get('search'));
         }
+	
+		if ($filters->get('company_id')) {
+            $query->whereCompanyId($filters->get('company_id'));
+        }
     }
 
     public function scopePaginateData($query, $limit)
     {
         if ($limit == 'all') {
-            return collect(['data' => $query->get()]);
+            return $query->get();
         }
 
         return $query->paginate($limit);
