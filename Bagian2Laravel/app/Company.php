@@ -27,13 +27,14 @@ class Company extends Model
     protected $hidden = [];
 
     protected $appends = [
+        'logoUrl',
         'formattedCreatedAt',
         'formattedUpdatedAt',
     ];
 
 	public function getLogoUrlAtAttribute()
     {
-        return null;
+		return asset("company/{$this->logo}");
     }
 	
 	public function getFormattedCreatedAtAttribute($value)
