@@ -12,6 +12,7 @@ class Company extends Model
         'name',
         'email',
         'website',
+        'logo',
     ];
 
     public $timestamps = true;
@@ -78,7 +79,7 @@ class Company extends Model
 			if($request->hasFile('logo'))
 			{
 				$file = $request->file('logo');
-				$filename = md5($mdl->id . time()) . '.' . $file->getClientOriginalExtension();
+				$filename = md5($mdl->id . $mdl->name . time()) . '.' . $file->getClientOriginalExtension();
 				$file->storeAs('company/', $filename);
 				
 				$mdl->logo = $filename;
@@ -97,7 +98,7 @@ class Company extends Model
 			{
 				Storage::disk('company')->delete("{$this->logo}");				
 				$file = $request->file('logo');
-				$filename = md5($this->id . time()) . '.' . $file->getClientOriginalExtension();
+				$filename = md5($this->id . $this->name . time()) . '.' . $file->getClientOriginalExtension();
 				$file->storeAs('company', $filename);
 				
 				$this->logo = $filename;
