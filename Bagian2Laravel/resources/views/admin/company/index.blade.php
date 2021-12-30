@@ -48,7 +48,7 @@
 										@foreach ($model as $value)
 										<tr>
 											<td>{{++$i}}</td>
-											<td>{{$value->logoUrl}}</td>
+											<td width="100px"><img src="{{$value->logoUrl}}" class="rounded w-100 h-auto" alt="{{$value->name}}"></td>
 											<td>{{$value->name}}</td>
 											<td>{{$value->email}}</td>
 											<td>{{$value->website}}</td>

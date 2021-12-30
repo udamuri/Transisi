@@ -32,7 +32,7 @@ class Company extends Model
         'formattedUpdatedAt',
     ];
 
-	public function getLogoUrlAtAttribute()
+	public function getLogoUrlAttribute()
     {
 		return asset("company/{$this->logo}");
     }
