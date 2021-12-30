@@ -34,4 +34,8 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function() {
 		Route::get('companies', Admin\CompanyPdfController::class)->name('admin.pdf.companies');
 		Route::get('employees', Admin\EmployeePdfController::class)->name('admin.pdf.employees');
 	});
+	
+	Route::group(['prefix' => 'import'], function() {
+		Route::post('employees', Admin\EmployeeImportController::class)->name('admin.import.employees');
+	});
 });

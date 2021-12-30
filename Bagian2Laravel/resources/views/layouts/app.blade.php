@@ -86,6 +86,30 @@
 			<div class="container">
 				<div class="row justify-content-center">
 					<div class="col-md-12">
+						@if ($success = Session::get('success'))
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-success">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                                        {{ $success }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if ($error = Session::get('error'))
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                                        {{ $error }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+					</div>
+
+					<div class="col-md-12">
 						@yield('content')
 					</div>
 				</div>
