@@ -96,7 +96,7 @@ class Company extends Model
         if($mdl = $this->update($data)) {
 			if($request->hasFile('logo'))
 			{
-				Storage::disk('company')->delete("{$this->logo}");				
+				Storage::disk('company')->delete($this->logo);				
 				$file = $request->file('logo');
 				$filename = md5($this->id . $this->name . time()) . '.' . $file->getClientOriginalExtension();
 				$file->storeAs('company', $filename);

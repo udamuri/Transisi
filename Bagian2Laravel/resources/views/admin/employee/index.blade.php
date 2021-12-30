@@ -11,7 +11,7 @@
 						<div class="col-2">
 							Employees
 						</div>
-						<div class="col-8 text-center">
+						<div class="col-4 text-center">
 							<form method="GET">
 								<div class="col-12" >
 									<div class="input-group">
@@ -22,6 +22,21 @@
 								</div>
 							</form>
 						</div>
+						
+						<div class="col-4 text-center">
+							<form id="form_excell" method="POST" action="{{route('admin.import.employees')}}" enctype="multipart/form-data">
+								@csrf
+								<div class="col-12" >
+									<div class="input-group">
+										<div class="form-outline">
+											Import Employee Excel, xls,xlsx <br>
+										  	<input type="file" name="file" id="file_upload" class="form-control" accept=".xls, .xlsx" />
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+
 						<div class="col-2 text-right">
 							<a class="btn btn-rounded btn-outline-primary btn-sm" href="{{route('admin.employees.create')}}">Add New</a>
 						</div>
@@ -92,7 +107,9 @@ $( ".jquery-postback" ).bind( "click", function(e) {
 	} else {
 		console.log("You canceled!");
 	}
-
-	
 });
+$('#file_upload').on('change', function(){
+	$('#form_excell').submit();
+})
+
 @endsection

@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Imports\EmployeeImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 
 class Employee extends Model
@@ -106,4 +108,39 @@ class Employee extends Model
 
         return $mdl ?? [];
     }
+
+	public static function excelImport($request) {
+		try {
+			$file = $request->file('file');
+			$data_excell = Excel::toArray(new EmployeeImport, $file);
+			$data = collect($data_excell[0]);
+			$chunks = $data->chunk(10);
+			foreach ($chunks as $chunk)
+			{
+				$arrayInsert = [];
+				foreach($chunk as $row) {
+					if(isset($row[0]) && isset($row[1]) && isset($row[2])) {
+						$arrayInsert[] = [
+							'company_id' => (int) $row[0] ,
+							'name' => (string) $row[1],
+							'email' => filter_var($row[2], FILTER_VALIDATE_EMAIL) ?? null, 
+						];
+					}
+				}
+				$error = 0;
+				if(count($arrayInsert)) {
+					try {
+						\DB::table('employees')->insert($arrayInsert);
+					} catch(\Exception $ex) {
+						$error++;
+						continue;
+					}
+				}
+			}
+			
+			return $error > 0 ? false : true;
+        } catch (\Exception $ex) {
+            return false;
+        }
+	}
 }
